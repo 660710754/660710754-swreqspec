@@ -186,3 +186,14 @@
 - เมื่อพบ booking ซ้ำ ระบบตอบ `409` และไม่สร้างรายการจองเพิ่ม
 - ไม่แก้ test ที่ชื่อขึ้นต้นด้วย `test_TC_`
 - ผล `pytest -v`: ผ่าน 10 tests, ไม่ผ่าน 0 tests, มี warning เดิม 1 รายการจาก `httpx`/`starlette`
+
+---
+
+## 2569-10-07 15.27 คำสั่ง: /implement T-04 specs/001-booking/tasks.md
+
+- ไฟล์ production code ที่ใช้ทำ T-04: `backend/app/booking/service.py`, `backend/app/booking/router.py`
+- ไฟล์ test ตามขอบเขต task: `backend/tests/test_AC_BKG_02.py` (ตรวจสอบแล้ว ไม่แก้ test ที่ชื่อขึ้นต้นด้วย `test_TC_`)
+- ผลการทำงาน: ตรวจ booking สถานะ `BOOKED` ของ HN เดียวกันในวันเดียวกันก่อนสร้างรายการใหม่; กรณีซ้ำตอบ `409` และกรณีคนละวันยังจองได้
+- ผล `pytest -v`: ผ่าน 10 tests, ไม่ผ่าน 0 tests, มี warning เดิม 1 รายการจาก `httpx`/`starlette`
+- เปลี่ยนสถานะ T-04 เป็น "เสร็จ รอทีมตรวจ"
+- สิ่งที่ไม่ได้เดา: หมายเลขคิวเดิมยังไม่ตรวจ เพราะ Q-02 ยังไม่มีคำตอบ
