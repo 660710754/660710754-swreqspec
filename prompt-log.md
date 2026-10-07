@@ -112,3 +112,13 @@
 - ขอบเขต: ไม่แก้ test และไม่แก้ test ที่ชื่อขึ้นต้นด้วย `test_TC_`
 - ผล test: รัน `cd backend && pytest -v` ผ่าน 7 tests, ไม่ผ่าน 0 tests
 - RTM: ย้าย F-006 ไปหัวข้อ "แก้แล้ว" และปรับหมายเหตุ endpoint ให้สะท้อนว่าไม่รับ/ไม่ log `national_id` แล้ว
+
+---
+
+## 2569-10-07 15.06 คำสั่ง: แก้ตาม F-007 ใน specs/001-booking/rtm.md
+
+- การแก้ไข: ลบ `next_queue_no` และการสร้างหมายเลขรูปแบบ `A001`; ตั้ง `queue_no=None` พร้อม comment `รอ Q-02` ใน `backend/app/booking/service.py`
+- เหตุผล: Q-02 ยังไม่มีคำตอบ จึงห้ามเดารูปแบบหรือลำดับหมายเลขคิว
+- ขอบเขต: ไม่แก้ test และไม่แก้ test ที่ชื่อขึ้นต้นด้วย `test_TC_`
+- ผล test: รัน `cd backend && pytest -v` ผ่าน 7 tests, ไม่ผ่าน 0 tests
+- RTM: ย้าย F-007 ไปหัวข้อ "แก้แล้ว"
