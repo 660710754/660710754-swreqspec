@@ -102,3 +102,13 @@
 - ขอบเขต: ไม่แก้ test และไม่แก้ test ที่ชื่อขึ้นต้นด้วย `test_TC_`
 - ผล test: รัน `cd backend && pytest -v` ผ่าน 7 tests, ไม่ผ่าน 0 tests
 - RTM: ย้าย F-001 ไปหัวข้อ "แก้แล้ว"; คง F-002 ไว้เนื่องจาก test ยังไม่ตรวจขอบเขต 30 วันโดยตรง
+
+---
+
+## 2569-10-07 15.04 คำสั่ง: แก้ตาม F-006 ใน specs/001-booking/rtm.md
+
+- การแก้ไข: ลบ `national_id` ออกจาก `BookingRequest`, ปฏิเสธฟิลด์ส่วนเกินด้วย `extra="forbid"` และลบ `national_id` ออกจาก log ใน `backend/app/booking/router.py`
+- เหตุผล: ใช้ HN ภายในระบบตาม `IF-HIS-01` และไม่รับ/บันทึกเลขบัตรประชาชนใน booking request
+- ขอบเขต: ไม่แก้ test และไม่แก้ test ที่ชื่อขึ้นต้นด้วย `test_TC_`
+- ผล test: รัน `cd backend && pytest -v` ผ่าน 7 tests, ไม่ผ่าน 0 tests
+- RTM: ย้าย F-006 ไปหัวข้อ "แก้แล้ว" และปรับหมายเหตุ endpoint ให้สะท้อนว่าไม่รับ/ไม่ log `national_id` แล้ว
