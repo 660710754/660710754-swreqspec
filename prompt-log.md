@@ -73,3 +73,13 @@
 - การแก้ไข: ปรับเงื่อนไขตรวจที่นั่งใน `create_booking` ให้โยน `SlotFullError` ก่อนลดจำนวนที่นั่ง
 - ขอบเขต: แก้เฉพาะ `backend/app/booking/service.py` ไม่แก้ test
 - ผล test: `cd backend && pytest -v` ผ่าน 7 tests, ไม่ผ่าน 0 tests (มี warning เดิม 1 รายการ)
+
+---
+
+## 2569-10-07 14.24 คำสั่ง: /verify specs/001-booking/
+
+- ผล test: backend ผ่าน 7 ไม่ผ่าน 0; frontend ผ่าน 1 ไม่ผ่าน 0
+- RTM: สร้าง `specs/001-booking/rtm.md`
+- ตารางตามรอยไปข้างหน้า 15 แถว: ครบ 1, ยังไม่ถึง 7, รอ 0, ช่องโหว่ 7
+- ข้อค้นพบใหม่: F-001 ถึง F-011
+- สรุปข้อค้นพบ: ช่วงค้นหา 14 วันไม่ตรง 30 วัน, performance test ไม่ใช่ concurrent 200 users, การออกเลขคิวใช้คำตอบตัวอย่างของ Q-02, รับ/เขียน `national_id`, ไม่มี async notification/audit/HIS/UI หลายส่วน, มี DELETE ที่อยู่ใน Out of scope, ค่าเริ่มต้นฐานข้อมูลเป็น SQLite และไม่มีหลักฐาน TLS/การทดสอบ usability
