@@ -26,6 +26,8 @@ def create_booking(req: BookingRequest, hn: str = Depends(get_verified_hn), db: 
     logger.info("booking request slot=%s hn=%s", req.slot_id, hn)
     try:
         booking = service.create_booking(db, hn=hn, slot_id=req.slot_id)
+    except service.DuplicateBookingError:
+        raise HTTPException(status_code=409, detail="มีการจองที่ยังไม่ได้ใช้ในวันเดียวกัน")
     except service.SlotFullError:
         raise HTTPException(status_code=409, detail="ช่วงเวลาเต็ม")
     except ValueError as e:
