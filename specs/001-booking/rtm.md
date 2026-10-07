@@ -25,7 +25,7 @@
 | โค้ด (ไฟล์: ฟังก์ชัน หรือ endpoint) | อ้าง ID | ตรงกับข้อความใน spec ไหม | หมายเหตุ |
 |---|---|---|---|
 | [slots/router.py: GET /slots](/workspaces/660710754-swreqspec/backend/app/slots/router.py:12) | FR-BKG-01, FR-BKG-06 | บางส่วน | คืนช่วงว่างและกรองแพ็กเกจ แต่ service จำกัดช่วงเป็น 14 วัน ไม่ใช่ 30 วัน และไม่มีหน้าจอใช้งานจริง |
-| [slots/service.py: list_available_slots](/workspaces/660710754-swreqspec/backend/app/slots/service.py:11) | FR-BKG-01, FR-BKG-06 | ไม่ตรงทั้งหมด | `DAYS_AHEAD = 14` ขัดกับ in-scope 30 วัน |
+| [slots/service.py: list_available_slots](/workspaces/660710754-swreqspec/backend/app/slots/service.py:11) | FR-BKG-01, FR-BKG-06 | ตรงในขอบเขตวันที่ | `DAYS_AHEAD = 30` ตรงกับช่วง 30 วันตาม FR-BKG-01 แต่ยังไม่มี test ตรวจขอบเขตวันที่และจำนวนที่นั่ง |
 | [booking/router.py: POST /bookings](/workspaces/660710754-swreqspec/backend/app/booking/router.py:20) | FR-BKG-04, IF-IDP-01 | ไม่ตรงทั้งหมด | รับ `national_id` และเขียนลง log ทั้งที่ IF-HIS-01 ห้ามเก็บเลขบัตรประชาชนโดยไม่จำเป็น; ไม่ส่งข้อความยืนยัน |
 | [booking/service.py: create_booking](/workspaces/660710754-swreqspec/backend/app/booking/service.py:22) | FR-BKG-04 | ไม่ตรงทั้งหมด | ทำ booking/ตัดที่นั่งและสร้าง queue number แต่รูปแบบ `A001` เป็นการตัดสินใจขณะ Q-02 ยังเปิดอยู่ และไม่มี message enqueue |
 | [auth/idp.py: get_verified_hn](/workspaces/660710754-swreqspec/backend/app/auth/idp.py:7) | IF-IDP-01 | ตรงบางส่วน | จำลอง token prefix ภายในระบบ ไม่ได้เชื่อมผลจากระบบ IDP จริง; เหมาะกับ task ที่ทำอยู่แต่ยังไม่ใช่ integration จริง |
@@ -40,7 +40,6 @@
 
 | F-ID | ชนิด | อยู่ที่ | ขัดกับ | รายละเอียด | ทีมตัดสิน |
 |---|---|---|---|---|---|
-| F-001 | ตัวเลขไม่ตรง spec | [slots/service.py:10](/workspaces/660710754-swreqspec/backend/app/slots/service.py:10) | FR-BKG-01 | `DAYS_AHEAD = 14` ทำให้ API แสดงช่วงล่วงหน้า 14 วัน ไม่ใช่ 30 วันตาม in-scope/FR | แก้โค้ด: เปลี่ยน `DAYS_AHEAD` จาก 14 เป็น 30 ให้ตรงกับ FR-BKG-01 |
 | F-002 | test อ่อน | [test_AC_BKG_05.py:6](/workspaces/660710754-swreqspec/backend/tests/test_AC_BKG_05.py:6) | NFR-PERF-01 | วัด 200 request แบบเรียงลำดับ ไม่ใช่ผู้ใช้พร้อมกัน 200 คน จึงยืนยัน NFR ไม่ได้ | แก้โค้ด: ปรับ test ให้จำลองผู้ใช้พร้อมกัน 200 คน เพื่อให้ตรวจ NFR-PERF-01 ได้จริง |
 | F-003 | AC ไม่มี test | [booking/service.py:22](/workspaces/660710754-swreqspec/backend/app/booking/service.py:22) | FR-BKG-04, AC-BKG-01 | ไม่มี assert หมายเลขคิวเพราะ Q-02 และไม่มี test การส่งคำขอข้อความ แม้ FR ระบุว่าต้องทำทั้งสองอย่าง | เพิ่ม Q-xx: ต้องตอบ Q-02 เรื่องรูปแบบหมายเลขคิวก่อน จึงจะเพิ่ม assertion หมายเลขคิวได้ครบ |
 | F-004 | โค้ดไม่มี FR | [booking/router.py:22](/workspaces/660710754-swreqspec/backend/app/booking/router.py:22) | FR-BKG-04, IF-NOT-01 | การจองไม่ enqueue คำขอ SMS/LINE แบบ asynchronous ตาม requirement | แก้โค้ด: เพิ่มการ enqueue คำขอส่งข้อความแบบ asynchronous ตาม FR-BKG-04 และ IF-NOT-01 |
@@ -55,3 +54,4 @@
 | F-ID | แก้อย่างไร | รู้ได้อย่างไร |
 |---|---|---|
 | F-008 | ลบ `DELETE /bookings/{booking_id}` จาก `booking/router.py` และลบ `cancel_booking` จาก `booking/service.py` | ไม่พบ endpoint หรือฟังก์ชันยกเลิกคิวในโค้ดแล้ว และการยกเลิก/เลื่อนคิวยังคงอยู่นอก scope ตาม spec |
+| F-001 | เปลี่ยน `DAYS_AHEAD` จาก 14 เป็น 30 ใน `backend/app/slots/service.py` | ค่าในโค้ดตรงกับช่วง 30 วันของ FR-BKG-01 แล้ว; ยังเหลือข้อค้นพบ F-002 เรื่อง test ไม่ตรวจขอบเขตวันที่ |

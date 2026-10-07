@@ -93,3 +93,12 @@
 - ขอบเขต: ไม่แก้ test และไม่แก้ test ที่ชื่อขึ้นต้นด้วย `test_TC_`
 - ผล test: รัน `cd backend && pytest -v` ผ่าน 7 tests, ไม่ผ่าน 0 tests
 - RTM: ย้าย F-008 ไปหัวข้อ "แก้แล้ว" พร้อมหลักฐานว่าไม่พบ endpoint/function ยกเลิกในโค้ด
+
+---
+
+## 2569-10-07 15.02 คำสั่ง: แก้ตาม F-001 ใน specs/001-booking/rtm.md
+
+- การแก้ไข: เปลี่ยน `DAYS_AHEAD` จาก 14 เป็น 30 ใน `backend/app/slots/service.py` ให้ตรงกับ `FR-BKG-01`
+- ขอบเขต: ไม่แก้ test และไม่แก้ test ที่ชื่อขึ้นต้นด้วย `test_TC_`
+- ผล test: รัน `cd backend && pytest -v` ผ่าน 7 tests, ไม่ผ่าน 0 tests
+- RTM: ย้าย F-001 ไปหัวข้อ "แก้แล้ว"; คง F-002 ไว้เนื่องจาก test ยังไม่ตรวจขอบเขต 30 วันโดยตรง
