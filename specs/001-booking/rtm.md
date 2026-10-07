@@ -1,6 +1,6 @@
 # RTM: จองคิวตรวจสุขภาพ (Booking)
-อ้างอิง: spec.md Draft v2 | tasks.md | test-cases.md
-สร้างด้วย /verify เมื่อ 2569-10-07 14.24 | test: backend 7 ผ่าน 0 ไม่ผ่าน, frontend 1 ผ่าน 0 ไม่ผ่าน
+อ้างอิง: spec.md Draft v3 | tasks.md | test-cases.md
+สร้างด้วย /verify เมื่อ 2569-10-07 15.10 | test: backend 7 ผ่าน 0 ไม่ผ่าน, frontend 1 ผ่าน 0 ไม่ผ่าน
 
 ## 1. ตามรอยไปข้างหน้า (requirement ไป โค้ด ไป test)
 | ID | AC | task | โค้ด (ไฟล์: ฟังก์ชัน) | test (ผล) | สถานะ |
@@ -24,7 +24,7 @@
 ## 2. ตามรอยย้อนกลับ (โค้ด ไป requirement)
 | โค้ด (ไฟล์: ฟังก์ชัน หรือ endpoint) | อ้าง ID | ตรงกับข้อความใน spec ไหม | หมายเหตุ |
 |---|---|---|---|
-| [slots/router.py: GET /slots](/workspaces/660710754-swreqspec/backend/app/slots/router.py:12) | FR-BKG-01, FR-BKG-06 | บางส่วน | คืนช่วงว่างและกรองแพ็กเกจ แต่ service จำกัดช่วงเป็น 14 วัน ไม่ใช่ 30 วัน และไม่มีหน้าจอใช้งานจริง |
+| [slots/router.py: GET /slots](/workspaces/660710754-swreqspec/backend/app/slots/router.py:12) | FR-BKG-01, FR-BKG-06 | บางส่วน | คืนช่วงว่างและกรองแพ็กเกจใน backend แต่ยังไม่มีหน้าจอใช้งานจริง และยังไม่มี AC/test สำหรับ FR-BKG-06 |
 | [slots/service.py: list_available_slots](/workspaces/660710754-swreqspec/backend/app/slots/service.py:11) | FR-BKG-01, FR-BKG-06 | ตรงในขอบเขตวันที่ | `DAYS_AHEAD = 30` ตรงกับช่วง 30 วันตาม FR-BKG-01 แต่ยังไม่มี test ตรวจขอบเขตวันที่และจำนวนที่นั่ง |
 | [booking/router.py: POST /bookings](/workspaces/660710754-swreqspec/backend/app/booking/router.py:20) | FR-BKG-04, IF-IDP-01 | ตรงในประเด็นข้อมูลบัตรประชาชน | request ไม่รับ `national_id` และ log เฉพาะ slot กับ HN แล้ว แต่ยังไม่ส่งข้อความยืนยัน |
 | [booking/service.py: create_booking](/workspaces/660710754-swreqspec/backend/app/booking/service.py:22) | FR-BKG-04 | ตรงในส่วนที่ยังไม่ติด Q-02 | ทำ booking/ตัดที่นั่ง และเว้น `queue_no` เป็นค่าว่างพร้อม comment รอ Q-02; ยังไม่มี message enqueue |
