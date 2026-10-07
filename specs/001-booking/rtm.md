@@ -28,7 +28,6 @@
 | [slots/service.py: list_available_slots](/workspaces/660710754-swreqspec/backend/app/slots/service.py:11) | FR-BKG-01, FR-BKG-06 | ไม่ตรงทั้งหมด | `DAYS_AHEAD = 14` ขัดกับ in-scope 30 วัน |
 | [booking/router.py: POST /bookings](/workspaces/660710754-swreqspec/backend/app/booking/router.py:20) | FR-BKG-04, IF-IDP-01 | ไม่ตรงทั้งหมด | รับ `national_id` และเขียนลง log ทั้งที่ IF-HIS-01 ห้ามเก็บเลขบัตรประชาชนโดยไม่จำเป็น; ไม่ส่งข้อความยืนยัน |
 | [booking/service.py: create_booking](/workspaces/660710754-swreqspec/backend/app/booking/service.py:22) | FR-BKG-04 | ไม่ตรงทั้งหมด | ทำ booking/ตัดที่นั่งและสร้าง queue number แต่รูปแบบ `A001` เป็นการตัดสินใจขณะ Q-02 ยังเปิดอยู่ และไม่มี message enqueue |
-| [booking/router.py: DELETE /bookings/{booking_id}](/workspaces/660710754-swreqspec/backend/app/booking/router.py:33) | ไม่มี | ไม่ตรงกับ scope | endpoint ยกเลิกคิวอยู่ใน Out of scope (UC-02) |
 | [auth/idp.py: get_verified_hn](/workspaces/660710754-swreqspec/backend/app/auth/idp.py:7) | IF-IDP-01 | ตรงบางส่วน | จำลอง token prefix ภายในระบบ ไม่ได้เชื่อมผลจากระบบ IDP จริง; เหมาะกับ task ที่ทำอยู่แต่ยังไม่ใช่ integration จริง |
 | [config.py: DATABASE_URL](/workspaces/660710754-swreqspec/backend/app/config.py:4) | CON-TECH-01 | ไม่ตรงค่าเริ่มต้น | ค่าเริ่มต้นเป็น SQLite แม้ระบบจริงกำหนด PostgreSQL |
 | [frontend/src/App.jsx: App](/workspaces/660710754-swreqspec/frontend/src/App.jsx:4) | Goal, FR-BKG-01 ถึง FR-BKG-06 | ยังไม่ตรง | เป็นเพียงหน้าจอโครง ไม่มี SlotPicker, ConfirmBooking หรือ BookingResult |
@@ -48,7 +47,6 @@
 | F-005 | FR ไม่มี AC | [spec.md](/workspaces/660710754-swreqspec/specs/001-booking/spec.md) | FR-BKG-06 | FR-BKG-06 ไม่มี AC ตรวจการเปลี่ยนแพ็กเกจ และไม่มี test ที่ตรวจจริง | แก้ spec: เพิ่ม AC สำหรับ FR-BKG-06 เพื่อให้ตรวจสอบการเปลี่ยนแพ็กเกจและสร้าง test ได้ |
 | F-006 | ละเมิด Constraint | [booking/router.py:19](/workspaces/660710754-swreqspec/backend/app/booking/router.py:19) | IF-HIS-01 | request รับ `national_id` และ logger เขียนค่า `national_id` ทั้งที่ข้อมูลบัตรประชาชนต้องไม่ถูกเก็บ/เผยโดยไม่จำเป็น | แก้โค้ด: ไม่รับและไม่เขียน `national_id` ลง log ให้ใช้ HN ตาม IF-HIS-01 |
 | F-007 | เดา Q-xx | [booking/service.py:14](/workspaces/660710754-swreqspec/backend/app/booking/service.py:14) | Q-02 | กำหนดรูปแบบและลำดับ queue เป็น `A001` ทั้งที่ Q-02 ยังไม่มีคำตอบ | เพิ่ม Q-xx: ต้องตอบ Q-02 ก่อนกำหนดรูปแบบ `A001` และกติกาการออกหมายเลขคิว |
-| F-008 | ของแถมอยู่ใน Out of scope | [booking/router.py:35](/workspaces/660710754-swreqspec/backend/app/booking/router.py:35) | Out of scope UC-02 | เพิ่ม DELETE สำหรับยกเลิกการจอง ทั้งที่ยกเลิก/เลื่อนคิวอยู่นอกขอบเขต และอ้าง FR-BKG-04 ผิดเรื่อง | แก้โค้ด: ของแถมอยู่ใน Out of scope (UC-02) ลบ DELETE endpoint และ `cancel_booking` ออก |
 | F-009 | ละเมิด Constraint | [config.py:6](/workspaces/660710754-swreqspec/backend/app/config.py:6) | CON-TECH-01 | ค่าเริ่มต้นของ runtime เป็น SQLite ไม่ใช่ PostgreSQL ตามมาตรฐานฐานข้อมูลของระบบจริง | ไม่ใช่ปัญหา: SQLite ใช้เป็นค่าเริ่มต้นสำหรับ dev/test ส่วนระบบจริงสามารถกำหนด PostgreSQL ผ่าน `DATABASE_URL` |
 | F-010 | โค้ดไม่มี FR | [frontend/src/App.jsx:4](/workspaces/660710754-swreqspec/frontend/src/App.jsx:4) | FR-BKG-01, FR-BKG-03, FR-BKG-04, FR-BKG-05, FR-BKG-06 | หน้าจอจริงทั้งหมดตาม tasks ยังไม่มี มีเพียงหน้าโครง | ไม่ใช่ปัญหา: Frontend ยังเป็นงานที่ยังไม่ถึงตาม tasks จึงยังไม่มีหน้าจอ booking |
 | F-011 | โค้ดไม่มี NFR | ทั้งระบบ | NFR-SEC-01, NFR-USE-01 | ไม่พบ TLS 1.2+ ในการรับส่ง และไม่มีการทดสอบผู้ใช้ใหม่ 8/10 ภายใน 3 นาที | ไม่ใช่ปัญหา: TLS อาจกำหนดที่ infrastructure/proxy และ usability test ไม่สามารถสรุปจาก source code เพียงอย่างเดียว |
@@ -56,4 +54,4 @@
 ## 4. แก้แล้ว
 | F-ID | แก้อย่างไร | รู้ได้อย่างไร |
 |---|---|---|
-| — | ยังไม่มีข้อค้นพบเดิมจาก RTM เนื่องจากยังไม่เคยสร้าง RTM | — |
+| F-008 | ลบ `DELETE /bookings/{booking_id}` จาก `booking/router.py` และลบ `cancel_booking` จาก `booking/service.py` | ไม่พบ endpoint หรือฟังก์ชันยกเลิกคิวในโค้ดแล้ว และการยกเลิก/เลื่อนคิวยังคงอยู่นอก scope ตาม spec |

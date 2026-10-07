@@ -83,3 +83,13 @@
 - ตารางตามรอยไปข้างหน้า 15 แถว: ครบ 1, ยังไม่ถึง 7, รอ 0, ช่องโหว่ 7
 - ข้อค้นพบใหม่: F-001 ถึง F-011
 - สรุปข้อค้นพบ: ช่วงค้นหา 14 วันไม่ตรง 30 วัน, performance test ไม่ใช่ concurrent 200 users, การออกเลขคิวใช้คำตอบตัวอย่างของ Q-02, รับ/เขียน `national_id`, ไม่มี async notification/audit/HIS/UI หลายส่วน, มี DELETE ที่อยู่ใน Out of scope, ค่าเริ่มต้นฐานข้อมูลเป็น SQLite และไม่มีหลักฐาน TLS/การทดสอบ usability
+
+---
+
+## 2569-10-07 14.54 คำสั่ง: แก้ตาม F-008 ใน specs/001-booking/rtm.md
+
+- การแก้ไข: ลบ `DELETE /bookings/{booking_id}` จาก `backend/app/booking/router.py` และลบ `cancel_booking` จาก `backend/app/booking/service.py`
+- เหตุผล: การยกเลิก/เลื่อนคิว UC-02 อยู่ใน Out of scope
+- ขอบเขต: ไม่แก้ test และไม่แก้ test ที่ชื่อขึ้นต้นด้วย `test_TC_`
+- ผล test: รัน `cd backend && pytest -v` ผ่าน 7 tests, ไม่ผ่าน 0 tests
+- RTM: ย้าย F-008 ไปหัวข้อ "แก้แล้ว" พร้อมหลักฐานว่าไม่พบ endpoint/function ยกเลิกในโค้ด
